@@ -17,7 +17,9 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Context } from "@/context";
+import useWatchStore from "@/store/useWatchStore";
 const Home = () => {
+  const { getWatchs } = useWatchStore();
   const [itemOffset, setItemOffset] = useState(0);
   const itemsPerPage = 5;
   const { setTime } = useContext(Context);
@@ -57,6 +59,7 @@ const Home = () => {
 
   useEffect(() => {
     setTime(24);
+    getWatchs();
   }, []);
 
   return (

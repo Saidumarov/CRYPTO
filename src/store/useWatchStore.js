@@ -1,9 +1,28 @@
 import { create } from "zustand";
 
 const useWatchStore = create((set) => ({
-  watchs: JSON.parse(localStorage.getItem("watchs")) || [],
+  watchs: [],
   loading: true,
   error: "",
+
+  getWatchs: () => {
+    try {
+      const watchs = JSON.parse(localStorage.getItem("watchs")) || [];
+      set((state) => ({
+        ...state,
+        watchs: watchs,
+        loading: false,
+        error: "",
+      }));
+    } catch (error) {
+      set((state) => ({
+        ...state,
+        watchs: [],
+        loading: false,
+        error: "Failed to load watchs from localStorage.",
+      }));
+    }
+  },
 
   addWatch: (newWatch) => {
     set((state) => {
