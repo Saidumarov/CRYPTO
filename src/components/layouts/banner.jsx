@@ -109,7 +109,9 @@ const Banner = ({ product }) => {
                   <Image src={"/uzb.png"} alt="uzb" width={18} height={18} />
                 ) : null}
                 <p>
-                  {usePrice(getConvertedPrice(el?.current_price, currency))}
+                  {getConvertedPrice(el?.current_price, currency)
+                    ?.toString()
+                    ?.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                 </p>
               </p>
             </div>
