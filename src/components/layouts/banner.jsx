@@ -1,14 +1,8 @@
-import { Context } from "@/context";
-import { usePrice } from "@/hooks/usePrice";
 import Image from "next/image";
-import { useContext } from "react";
-import { FaRubleSign } from "react-icons/fa6";
-import { IoLogoUsd } from "react-icons/io5";
 import Slider from "react-slick";
 
 const Banner = ({ product }) => {
   const { data, isLoading, isError } = product;
-  const { currency, setCurrency } = useContext(Context);
   const settings = {
     dots: true,
     infinite: true,
@@ -37,19 +31,6 @@ const Banner = ({ product }) => {
         },
       },
     ],
-  };
-
-  const getConvertedPrice = (price, currency) => {
-    switch (currency) {
-      case "USD":
-        return price;
-      case "RUB":
-        return price * 90;
-      case "UZB":
-        return price * 12652;
-      default:
-        return price;
-    }
   };
 
   return (
@@ -103,13 +84,9 @@ const Banner = ({ product }) => {
                 </span>
               </p>
               <p className="text-white font-bold flex items-center gap-2 text-lg pt-1">
-                {currency === "USD" ? <IoLogoUsd /> : null}
-                {currency === "RUB" ? <FaRubleSign /> : null}
-                {currency === "UZB" ? (
-                  <Image src={"/uzb.png"} alt="uzb" width={18} height={18} />
-                ) : null}
+                ₹{" "}
                 <p>
-                  {getConvertedPrice(el?.current_price, currency)
+                  {el?.current_price
                     ?.toString()
                     ?.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                 </p>

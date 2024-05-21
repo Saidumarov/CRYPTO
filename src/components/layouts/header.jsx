@@ -34,10 +34,10 @@ const Header = () => {
                 <SelectValue placeholder="USD" />
               </SelectTrigger>
               <SelectContent>
-                <SelectGroup defaultValue="USD">
-                  <SelectItem value="USD">USD</SelectItem>
-                  <SelectItem value="UZB">UZB</SelectItem>
-                  <SelectItem value="RUB">RUB</SelectItem>
+                <SelectGroup defaultValue="usd">
+                  <SelectItem value="usd">USD</SelectItem>
+                  <SelectItem value="aud">BAA</SelectItem>
+                  <SelectItem value="inr">INR</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>

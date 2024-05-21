@@ -1,12 +1,36 @@
-import React, { useState, useEffect } from "react";
+"use client";
+import { Apiservice } from "@/api/api.service";
+import { Context } from "@/context";
+import { useQuery } from "@tanstack/react-query";
+import React, { useState, useEffect, useContext } from "react";
 import ReactApexChart from "react-apexcharts";
+import ChartLoading from "../loading/chartLoading";
 
-const Chart = ({ dates }) => {
+const Chart = ({ id: idArray }) => {
+  const [id, loading] = idArray;
+  const { time, currency } = useContext(Context);
+  const api = `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=${currency}&days=${time}`;
+
+  const getData = async () => {
+    try {
+      const data = await Apiservice.fetching(api);
+      return data;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      throw error;
+    }
+  };
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: [id, time, currency],
+    queryFn: getData,
+  });
+
   const [chartOptions, setChartOptions] = useState({
     series: [
       {
         name: "Valyuta",
-        data: dates,
+        data: [],
       },
     ],
     options: {
@@ -46,7 +70,7 @@ const Chart = ({ dates }) => {
       yaxis: {
         labels: {
           formatter: function (val) {
-            return (val / 1000000).toFixed(0);
+            return val.toFixed(2);
           },
         },
         title: {
@@ -60,7 +84,7 @@ const Chart = ({ dates }) => {
         shared: false,
         y: {
           formatter: function (val) {
-            return (val / 1000000).toFixed(0);
+            return val.toFixed(2);
           },
         },
       },
@@ -68,19 +92,22 @@ const Chart = ({ dates }) => {
   });
 
   useEffect(() => {
-    setChartOptions((prevOptions) => ({
-      ...prevOptions,
-      series: [
-        {
-          name: "Valyuta",
-          data: dates,
-        },
-      ],
-    }));
-  }, [dates]);
+    if (data?.prices) {
+      setChartOptions((prevOptions) => ({
+        ...prevOptions,
+        series: [
+          {
+            name: "Valyuta",
+            data: data.prices,
+          },
+        ],
+      }));
+    }
+  }, [data]);
 
   return (
     <div>
+      {loading == false && isLoading ? <ChartLoading /> : null}
       <div id="chart">
         <ReactApexChart
           options={chartOptions.options}

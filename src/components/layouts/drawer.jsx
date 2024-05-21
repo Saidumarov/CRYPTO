@@ -1,13 +1,21 @@
 "use client";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import NoData from "../constants/svg";
-import useWatchStore from "@/store/useWatchStore";
 import WatchCard from "../watchCard";
+import { Context } from "@/context";
 
 export function DrawerComponent() {
-  const { watchs } = useWatchStore();
+  const [watchs, setWatchs] = useState(null);
+  const { reload } = useContext(Context);
+
+  useEffect(() => {
+    const watchs = JSON.parse(localStorage.getItem("watchs")) || [];
+    if (watchs) {
+      setWatchs(watchs);
+    }
+  }, [reload]);
   return (
     <Drawer direction="right">
       <DrawerTrigger asChild>

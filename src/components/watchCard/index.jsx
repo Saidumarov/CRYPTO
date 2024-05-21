@@ -1,24 +1,17 @@
 import { Context } from "@/context";
 import { usePrice } from "@/hooks/usePrice";
-import useWatchStore from "@/store/useWatchStore";
 import Image from "next/image";
 import React, { useContext } from "react";
-import { FaRubleSign } from "react-icons/fa6";
-import { IoLogoUsd } from "react-icons/io5";
 
 const WatchCard = (el) => {
-  const { removeWatch } = useWatchStore();
-  const { currency, setCurrency } = useContext(Context);
-  const getConvertedPrice = (price, currency) => {
-    switch (currency) {
-      case "USD":
-        return price;
-      case "RUB":
-        return price * 90;
-      case "UZB":
-        return price * 12652;
-      default:
-        return price;
+  const { time, setTime, reload, setReload } = useContext(Context);
+
+  const remove = (id) => {
+    const watchs = JSON.parse(localStorage.getItem("watchs")) || [];
+    if (watchs) {
+      const update = watchs?.filter((el) => el?.id !== id);
+      localStorage.setItem("watchs", JSON.stringify(update));
+      setReload(update);
     }
   };
   return (
@@ -32,18 +25,10 @@ const WatchCard = (el) => {
           className="mx-auto"
         />
         <p className=" pt-5 flex items-center gap-2 justify-center font-[600] text-[18px] text-center text-white">
-          {currency === "USD" ? <IoLogoUsd /> : null}
-          {currency === "RUB" ? <FaRubleSign /> : null}
-          {currency === "UZB" ? (
-            <Image src={"/uzb.png"} alt="uzb" width={18} height={18} />
-          ) : null}
-
-          {usePrice(
-            getConvertedPrice(el?.market_data?.current_price?.usd, currency)
-          )}
+          ₹ {usePrice(el?.market_data?.current_price?.usd)}
         </p>
         <button
-          onClick={() => removeWatch(el?.id)}
+          onClick={() => remove(el?.id)}
           className="w-[106px] h-[30px] bg-red-500 block text-white mx-auto mt-2"
         >
           Remove

@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import MarketCap from "@/components/market_cap";
 import Card from "@/components/card";
-import { Apiservice, BASE_URI } from "@/api/api.service";
+import { Apiservice } from "@/api/api.service";
 import { useQuery } from "@tanstack/react-query";
 import {
   Pagination,
@@ -17,13 +17,12 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Context } from "@/context";
-import useWatchStore from "@/store/useWatchStore";
 const Home = () => {
-  const { getWatchs } = useWatchStore();
   const [itemOffset, setItemOffset] = useState(0);
   const itemsPerPage = 5;
-  const { setTime } = useContext(Context);
+  const { setTime, currency } = useContext(Context);
   const paginationItemCount = 5;
+  const BASE_URI = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=gecko_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h`;
   const getData = async () => {
     try {
       const data = await Apiservice.fetching(BASE_URI);
@@ -33,7 +32,7 @@ const Home = () => {
     }
   };
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["get"],
+    queryKey: [currency],
     queryFn: getData,
   });
 
@@ -58,8 +57,7 @@ const Home = () => {
   }
 
   useEffect(() => {
-    setTime(24);
-    getWatchs();
+    setTime(1);
   }, []);
 
   return (
@@ -88,7 +86,7 @@ const Home = () => {
                 </PaginationItem>
                 {startPage > 0 && (
                   <PaginationItem>
-                    <PaginationEllipsis />
+                    <PaginationEllipsis className="text-[#5ca3c4]" />
                   </PaginationItem>
                 )}
                 {Array.from({ length: endPage - startPage + 1 }).map((_, i) => (
@@ -104,7 +102,7 @@ const Home = () => {
                 ))}
                 {endPage < pageCount - 1 && (
                   <PaginationItem>
-                    <PaginationEllipsis />
+                    <PaginationEllipsis className="text-[#5ca3c4]" />
                   </PaginationItem>
                 )}
                 <PaginationItem>

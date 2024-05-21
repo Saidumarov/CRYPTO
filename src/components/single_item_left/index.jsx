@@ -2,23 +2,9 @@ import { Context } from "@/context";
 import { usePrice } from "@/hooks/usePrice";
 import Image from "next/image";
 import { useContext } from "react";
-import { FaRubleSign } from "react-icons/fa6";
-import { IoLogoUsd } from "react-icons/io5";
 
 const SingleLeft = (el) => {
-  const { currency, setCurrency } = useContext(Context);
-  const getConvertedPrice = (price, currency) => {
-    switch (currency) {
-      case "USD":
-        return price;
-      case "RUB":
-        return price * 90;
-      case "UZB":
-        return price * 12652;
-      default:
-        return price;
-    }
-  };
+  const { currency } = useContext(Context);
   return (
     <div className="w-full pt-8 pr-5 overflow-hidden">
       <div>
@@ -42,18 +28,30 @@ const SingleLeft = (el) => {
         <h3 className="pl-8 flex text-white text-[22px] pt-1 max-[400px]:text-[18px] items-center gap-2">
           Current Price:
           <p className="font-[600] text-white flex items-center gap-2 ">
-            {usePrice(
-              getConvertedPrice(el?.market_data?.current_price?.usd, currency)
-            )}
-            {currency === "USD" ? <IoLogoUsd /> : null}
-            {currency === "RUB" ? <FaRubleSign /> : null}
-            {currency === "UZB" ? (
-              <Image src={"/uzb.png"} alt="uzb" width={18} height={18} />
-            ) : null}
+            ₹{" "}
+            {currency === "usd"
+              ? usePrice(el?.market_data?.current_price?.usd)
+              : null}
+            {currency === "aud"
+              ? usePrice(el?.market_data?.current_price?.aud)
+              : null}
+            {currency === "inr"
+              ? usePrice(el?.market_data?.current_price?.inr)
+              : null}
           </p>
         </h3>
         <h3 className="pl-8 text-white text-[22px] pt-1 max-[400px]:text-[18px]">
-          Market Cap: {usePrice(el?.market_data?.market_cap?.aed)} M
+          Market Cap:{" "}
+          {currency === "usd"
+            ? usePrice(el?.market_data?.market_cap?.usd)
+            : null}
+          {currency === "aud"
+            ? usePrice(el?.market_data?.market_cap?.aud)
+            : null}
+          {currency === "inr"
+            ? usePrice(el?.market_data?.market_cap?.inr)
+            : null}
+          M
         </h3>
       </div>
     </div>

@@ -56,3 +56,52 @@
     transform: scale(0);
   }
 }
+
+// chart loading
+
+.circle {
+  display: inline-block;
+  height: 4rem;
+  aspect-ratio: 1;
+  background: white;
+  border-radius: 50%;
+  filter: blur(1px);
+}
+
+.circle:nth-child(1) {
+  animation: move-left 3s ease-in-out infinite;
+  transform: translatex(100%);
+
+  @keyframes move-left {
+    50% {
+      transform: translatex(-100px);
+    }
+    100% {
+      rotate: 1turn;
+    }
+  }
+}
+.circle:nth-child(2) {
+  animation: move-right 3s ease-in-out infinite;
+  transform: translatex(-100%);
+
+  @keyframes move-right {
+    50% {
+      transform: translatex(100px);
+    }
+    100% {
+      rotate: 1turn;
+    }
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  padding-top: 160px;
+  z-index: 20;
+  left: 45%;
+}
