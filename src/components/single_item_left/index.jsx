@@ -1,10 +1,13 @@
 import { Context } from "@/context";
-import { usePrice } from "@/hooks/usePrice";
 import Image from "next/image";
 import { useContext } from "react";
 
 const SingleLeft = (el) => {
   const { currency } = useContext(Context);
+  const usePrice = (value) => {
+    return value?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   return (
     <div className="w-full pt-8 pr-5 overflow-hidden">
       <div>
