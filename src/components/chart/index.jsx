@@ -26,6 +26,7 @@ const Chart = ({ id: idArray }) => {
     queryFn: getData,
   });
 
+  console.log(data);
   const [chartOptions, setChartOptions] = useState({
     series: [
       {
