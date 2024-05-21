@@ -1,13 +1,16 @@
 import { Context } from "@/context";
+import { usePrice } from "@/hooks/usePrice";
 import Image from "next/image";
 import { useContext } from "react";
 
 const SingleLeft = (el) => {
   const { currency } = useContext(Context);
-  const usePrice = (value) => {
-    return value?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
-
+  const priceUSD = usePrice(el?.market_data?.current_price?.usd);
+  const priceAUD = usePrice(el?.market_data?.current_price?.aud);
+  const priceINR = usePrice(el?.market_data?.current_price?.inr);
+  const marketCapUSD = usePrice(el?.market_data?.market_cap?.usd);
+  const marketCapAUD = usePrice(el?.market_data?.market_cap?.aud);
+  const marketCapINR = usePrice(el?.market_data?.market_cap?.inr);
   return (
     <div className="w-full pt-8 pr-5 overflow-hidden">
       <div>
@@ -33,26 +36,22 @@ const SingleLeft = (el) => {
           <p className="font-[600] text-white flex items-center gap-2 ">
             ₹{" "}
             {currency === "usd"
-              ? usePrice(el?.market_data?.current_price?.usd)
-              : null}
-            {currency === "aud"
-              ? usePrice(el?.market_data?.current_price?.aud)
-              : null}
-            {currency === "inr"
-              ? usePrice(el?.market_data?.current_price?.inr)
+              ? priceUSD
+              : currency === "aud"
+              ? priceAUD
+              : currency === "inr"
+              ? priceINR
               : null}
           </p>
         </h3>
         <h3 className="pl-8 text-white text-[22px] pt-1 max-[400px]:text-[18px]">
           Market Cap:{" "}
           {currency === "usd"
-            ? usePrice(el?.market_data?.market_cap?.usd)
-            : null}
-          {currency === "aud"
-            ? usePrice(el?.market_data?.market_cap?.aud)
-            : null}
-          {currency === "inr"
-            ? usePrice(el?.market_data?.market_cap?.inr)
+            ? marketCapUSD
+            : currency === "aud"
+            ? marketCapAUD
+            : currency === "inr"
+            ? marketCapINR
             : null}
           M
         </h3>
