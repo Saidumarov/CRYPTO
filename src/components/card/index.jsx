@@ -26,7 +26,7 @@ const Card = (el) => {
             alt=""
             width={50}
             height={50}
-            className="block bg-red-500 rounded-[50%]"
+            className="block rounded-[50%]"
           />
           <div className="text-white  ml-5 max-[500px]:mx-auto">
             <p className=" text-left text-[18px] uppercase">{el?.symbol}</p>
